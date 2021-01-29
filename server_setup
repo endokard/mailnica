@@ -6,7 +6,7 @@ apt-get update
 useradd NEW_USER
 passwd NEW_USER
 
-#SSH service configuration
+#SSH service configuration -> mailnica/ssh/sshd_conf
 vi /etc/sshd_conf
 port 27
 PermitRootLogin no
