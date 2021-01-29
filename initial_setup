@@ -1,0 +1,20 @@
+#System update
+apt-get upgrade
+apt-get update
+
+#Non-root user creaton
+useradd NEW_USER
+passwd NEW_USER
+
+#SSH service configuration
+vi /etc/sshd_conf
+port 27
+PermitRootLogin no
+AllowAgentForwarding no
+AllowTcpForwarding no
+
+#Add new user to sudoers
+vi /etc/sudoers
+
+#restart sshd service
+systemctl restart sshd
