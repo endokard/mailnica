@@ -1,1 +1,9 @@
-a
+#Do not forget to change default port
+port 27
+
+#Deny root login
+PermitRootLogin no
+
+#Deny forwarding
+AllowAgentForwarding no
+AllowTcpForwarding no
