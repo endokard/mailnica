@@ -18,3 +18,12 @@ vi /etc/sudoers
 
 #restart sshd service
 systemctl restart sshd
+
+#install postfix
+apt-get install postfix
+systemctl enable postfix
+
+#postfix configuration
+#check /mailnica/postfix/
+
+systemctl start postfix
