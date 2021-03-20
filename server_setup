@@ -20,7 +20,7 @@ vi /etc/sudoers
 systemctl restart sshd
 
 #install postfix
-apt-get install postfix
+apt-get install postfix mailutils
 systemctl enable postfix
 
 #postfix configuration
