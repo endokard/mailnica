@@ -30,8 +30,6 @@ mkdir /etc/mailnca
 apt-get install postfix mailutils
 systemctl enable postfix
 
-mkdir /etc/postfix/ssl
-
 #postfix configuration
 #check /mailnica/postfix/
 
@@ -46,7 +44,7 @@ apt install nginx certbot python3-certbot-nginx
 ########
 #NGINX
 ########
-mkdir /etc/nginx/ssl
+
 mkdir /var/www/mailnica.com
 wget -O /etc/nginx/sites-avaliable/mailnica.com https://raw.githubusercontent.com/endokard/mailnica/main/nginx/sites-avaliable/mailnica.com
 ln -s /etc/nginx/sites-available/mailnica.com /etc/nginx/sites-enabled/mailnica.com
@@ -55,4 +53,4 @@ systemctl enable nginx
 ########
 #CERTBOT
 ########
-certbot certonly --webroot -w /var/www/mailnica.com -d mailnica.com  --post-hook  "/etc/mailnica/service_reload.sh"
+certbot certonly --webroot -w /var/www/mailnica.com -d mailnica.com
