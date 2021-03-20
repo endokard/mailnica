@@ -48,6 +48,7 @@ apt install nginx certbot python3-certbot-nginx
 ########
 mkdir /etc/nginx/ssl
 mkdir /var/www/mailnica.com
+wget -O /etc/nginx/sites-avaliable/mailnica.com 
 
 ########
 #CERTBOT
