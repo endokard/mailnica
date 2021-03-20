@@ -22,14 +22,24 @@ systemctl restart sshd
 #create mailnica dir
 mkdir /etc/mailnca
 
+########
+#POSTFIX
+########
+
 #install postfix
 apt-get install postfix mailutils
 systemctl enable postfix
+
+mkdir /etc/postfix/ssl
 
 #postfix configuration
 #check /mailnica/postfix/
 
 systemctl start postfix
+
+########
+########
+########
 
 apt install nginx certbot python3-certbot-nginx
 certbot certonly --webroot -w /var/www/mailnica.com -d mailnica.com  --post-hook  "/etc/mailnica/service_reload.sh"
