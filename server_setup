@@ -42,4 +42,14 @@ systemctl start postfix
 ########
 
 apt install nginx certbot python3-certbot-nginx
+
+########
+#NGINX
+########
+mkdir /etc/nginx/ssl
+mkdir /var/www/mailnica.com
+
+########
+#CERTBOT
+########
 certbot certonly --webroot -w /var/www/mailnica.com -d mailnica.com  --post-hook  "/etc/mailnica/service_reload.sh"
