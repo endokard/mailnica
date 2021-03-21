@@ -145,3 +145,11 @@ vi /usr/share/postfixadmin/config.local.php
 ln -s /usr/share/postfixadmin/config.local.php /etc/postfixadmin/config.local.php
 
 http://adm.mailnica.com/setup.php
+
+apt install postfix-mysql
+
+vi /etc/postfix/main.cf
+
+mkdir /etc/postfix/sql/
+
+vi /etc/postfix/sql/mysql_virtual_domains_maps.cf
