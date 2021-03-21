@@ -140,8 +140,8 @@ systemctl disable --now apache2
 apt install php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath
 apt install php7.4-fpm php7.4-imap php7.4-mbstring php7.4-mysql php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-bz2 php7.4-intl php7.4-gmp
 
-http://adm.mailnica.com/setup.php
-
 vi /usr/share/postfixadmin/config.local.php
 
 ln -s /usr/share/postfixadmin/config.local.php /etc/postfixadmin/config.local.php
+
+http://adm.mailnica.com/setup.php
