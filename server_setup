@@ -161,3 +161,5 @@ vi /etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf
 vi /etc/postfix/sql/mysql_virtual_alias_maps.cf
 
 vi /etc/postfix/sql/mysql_virtual_alias_domain_maps.cf
+
+vi /etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
