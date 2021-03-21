@@ -153,3 +153,5 @@ vi /etc/postfix/main.cf
 mkdir /etc/postfix/sql/
 
 vi /etc/postfix/sql/mysql_virtual_domains_maps.cf
+
+vi /etc/postfix/sql/mysql_virtual_mailbox_maps.cf
