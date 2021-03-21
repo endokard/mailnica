@@ -122,3 +122,15 @@ apt install postfixadmin
 apt remove dbconfig-no-thanks
 
 dpkg-reconfigure postfixadmin
+
+vi /etc/dbconfig-common/postfixadmin.conf
+ dbc_dbtype='mysqli'
+
+vi /etc/postfixadmin/dbconfig.inc.php
+ $dbtype='mysqli';
+ 
+mkdir /usr/share/postfixadmin/templates_c
+apt install acl
+setfacl -R -m u:www-data:rwx /usr/share/postfixadmin/templates_c/
+
+vi /etc/nginx/sites-avaliable/adm.mailnica.com
