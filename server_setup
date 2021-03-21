@@ -54,3 +54,71 @@ systemctl enable nginx
 #CERTBOT
 ########
 certbot certonly --webroot -w /var/www/mailnica.com -d mailnica.com
+
+
+########
+#DOVECOT
+########
+apt install dovecot-core dovecot-imapd dovecot-pop3d
+vi /etc/dovecot/dovecot.conf
+ protocols = imap pop3
+
+vi /etc/dovecot/conf.d/10-mail.conf
+ mail_location = maildir:~/Maildir
+
+vi /etc/dovecot/conf.d/10-auth.conf
+ disable_plaintext_auth = yes
+ auth_username_format = %n
+
+vi /etc/dovecot/conf.d/10-ssl.conf
+ ssl = required
+ ssl_cert = </etc/letsencrypt/live/mailnica.com/fullchain.pem
+ ssl_key = </etc/letsencrypt/live/mailnica.com/privkey.pem
+ ssl_prefer_server_ciphers = yes
+ ssl_min_protocol = TLSv1.2
+ ssl_protocols = !SSLv3 !TLSv1 !TLSv1.1
+ 
+vi /etc/dovecot/conf.d/10-master.conf
+ 
+vi /etc/dovecot/conf.d/15-mailboxes.conf
+
+adduser dovecot mail
+
+apt install dovecot-lmtpd
+
+vi /etc/dovecot/dovecot.conf
+ protocols = imap lmtp
+
+vi /etc/dovecot/conf.d/10-master.conf
+ service lmtp {
+ unix_listener /var/spool/postfix/private/dovecot-lmtp {
+   mode = 0600
+   user = postfix
+   group = postfix
+  }
+}
+
+vi /etc/postfix/main.cf
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
+smtputf8_enable = no
+
+systemctl enable dovecot
+
+systemctl restart postfix dovecot
+
+########
+#MariaDB
+########
+
+apt install mariadb-server mariadb-client
+systemctl enable mariadb
+mysql_secure_installation
+
+########
+#PostfixAdmin
+########
+apt install dbconfig-no-thanks
+apt install postfixadmin
+apt remove dbconfig-no-thanks
+
+dpkg-reconfigure postfixadmin
