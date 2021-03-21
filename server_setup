@@ -163,3 +163,33 @@ vi /etc/postfix/sql/mysql_virtual_alias_maps.cf
 vi /etc/postfix/sql/mysql_virtual_alias_domain_maps.cf
 
 vi /etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
+
+chmod 0640 /etc/postfix/sql/*
+setfacl -R -m u:postfix:rx /etc/postfix/sql/
+
+postconf -e "mydestination = \$myhostname, localhost.\$mydomain, localhost"
+
+vi /etc/postfix/main.cf
+
+systemctl restart postfix
+
+adduser vmail --system --group --uid 2000 --disabled-login --no-create-home
+mkdir /var/vmail/
+chown vmail:vmail /var/vmail/ -R
+
+#######
+#DovecotNySql
+#######
+apt install dovecot-mysql
+vi /etc/dovecot/conf.d/10-mail.conf
+ mail_home = /var/vmail/%d/%n/
+ 
+vi /etc/dovecot/conf.d/10-auth.conf
+ auth_username_format = %u
+ !include auth-sql.conf.ext
+ #!include auth-system.conf.ext
+ auth_debug = yes
+ auth_debug_passwords = yes
+ 
+vi /etc/dovecot/dovecot-sql.conf.ext
+ 
