@@ -199,3 +199,5 @@ systemctl restart dovecot
 #SSLNginx
 #####
 vi /etc/nginx/snippets/ssl-params.conf
+openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+vi /etc/nginx/sites-available/mailnica.com
