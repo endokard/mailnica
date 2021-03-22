@@ -193,3 +193,9 @@ vi /etc/dovecot/conf.d/10-auth.conf
  
 vi /etc/dovecot/dovecot-sql.conf.ext
  
+systemctl restart dovecot
+
+######
+#SSLNginx
+#####
+vi /etc/nginx/snippets/ssl-params.conf
