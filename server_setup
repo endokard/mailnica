@@ -224,7 +224,7 @@ vi /etc/nginx/sites-available/mailnica.com
  exit;
  mysql roundcube < /var/www/roundcube/SQL/mysql.initial.sql
  
- vi /etc/apache2/sites-available/roundcube.conf
+ vi /etc/nginx/sites-available/roundcube.conf
  
  
  
