@@ -201,3 +201,30 @@ systemctl restart dovecot
 vi /etc/nginx/snippets/ssl-params.conf
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 vi /etc/nginx/sites-available/mailnica.com
+
+######
+#Roundcube
+######
+
+ wget https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz
+ tar xvf roundcubemail-1.4.11-complete.tar.gz
+ mv roundcubemail-1.4.6 /var/www/roundcube
+ 
+ apt install php-net-ldap2 php-net-ldap3 php-imagick php-common php-gd php-imap php-json php-curl php-zip php-xml php-mbstring php-bz2 php-intl php-gmp
+ apt install composer
+ cd /var/www/roundcube
+ composer install --no-dev
+ chown www-data:www-data temp/ logs/ -R
+ 
+ mysql -u root
+ CREATE DATABASE roundcube DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ CREATE USER roundu@localhost IDENTIFIED BY 'password';
+ GRANT ALL PRIVILEGES ON roundcube.* TO roundu@localhost;
+ flush privileges;
+ exit;
+ mysql roundcube < /var/www/roundcube/SQL/mysql.initial.sql
+ 
+ vi /etc/apache2/sites-available/roundcube.conf
+ 
+ 
+ 
