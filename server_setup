@@ -225,6 +225,17 @@ vi /etc/nginx/sites-available/mailnica.com
  mysql roundcube < /var/www/roundcube/SQL/mysql.initial.sql
  
  vi /etc/nginx/sites-available/roundcube.conf
+ ln -s /etc/nginx/sites-available/roundcube /etc/nginx/sites-enabled/roundcube
+ systemctl reload nginx
  
+ http://mail.example.com/installer
+ rm /var/www/roundcube/installer/ -r
+ 
+ #####
+ #Sieve
+ #####
+ 
+ apt install dovecot-sieve dovecot-managesieved
+ apt install dovecot-lmtpd
  
  
