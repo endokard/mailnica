@@ -238,4 +238,13 @@ vi /etc/nginx/sites-available/mailnica.com
  apt install dovecot-sieve dovecot-managesieved
  apt install dovecot-lmtpd
  
+ vi /etc/dovecot/dovecot.conf
+ protocols = imap pop3 lmtp sieve
  
+ vi /etc/dovecot/conf.d/10-master.conf
+ vi /etc/postfix/main.cf
+ vi /etc/dovecot/conf.d/15-lda.conf
+vi /etc/dovecot/conf.d/20-lmtp.conf
+vi /etc/dovecot/conf.d/10-mail.conf
+
+systemctl restart postfix dovecot
