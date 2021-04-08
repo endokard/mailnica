@@ -248,3 +248,72 @@ vi /etc/dovecot/conf.d/20-lmtp.conf
 vi /etc/dovecot/conf.d/10-mail.conf
 
 systemctl restart postfix dovecot
+
+
+#####
+#DKIM,DMARC,SPF
+#####
+apt install postfix-policyd-spf-python
+vi /etc/postfix/master.cf
+policyd-spf  unix  -       n       n       -       -       spawn
+  user=nobody argv=/usr/bin/policyd-spf
+vi /etc/postfix/main.cf
+smtpd_recipient_restrictions = policyd-spf_time_limit = 3600
+check_policy_service unix:private/policyd-spf
+systemctl restart postfix
+
+apt install opendkim opendkim-tools
+gpasswd -a postfix opendkim
+vi /etc/opendkim.conf
+Mode               sv
+Canonicalization   relaxed/simple
+SubDomains         no
+
+Socket inet:8892@127.0.0.1
+
+#below #ADSPAction
+AutoRestart         yes
+AutoRestartRate     10/1M
+Background          yes
+DNSTimeout          5
+SignatureAlgorithm  rsa-sha256
+
+#OpenDKIM user
+# Remember to add user postfix to group opendkim
+UserID             opendkim
+
+# Map domains in From addresses to keys used to sign messages
+KeyTable                refile:/etc/opendkim/key.table
+SigningTable            refile:/etc/opendkim/signing.table
+ExternalIgnoreList      refile:/etc/opendkim/trusted.hosts
+InternalHosts           refile:/etc/opendkim/trusted.hosts
+
+mkdir /etc/opendkim
+mkdir /etc/opendkim/keys
+chown -R opendkim:opendkim /etc/opendkim
+chmod go-rw /etc/opendkim/keys
+
+vi /etc/opendkim/signing.table
+*@mailnica.com    default._domainkey.mailnica.com
+
+vi /etc/opendkim/key.table
+default._domainkey.mailnica.com     mailnica.com:default:/etc/opendkim/keys/mailnica.com/default.private
+
+mkdir /etc/opendkim/keys/mailnica.com
+opendkim-genkey -b 2048 -d mailnica.com -D /etc/opendkim/keys/mailnica.com -s default -v
+chown opendkim:opendkim /etc/opendkim/keys/mailnica.com/default.private
+
+KeyTable                refile:/etc/opendkim/key.table
+SigningTable            refile:/etc/opendkim/signing.table
+ExternalIgnoreList      refile:/etc/opendkim/trusted.hosts
+InternalHosts           refile:/etc/opendkim/trusted.hosts
+
+cat /etc/opendkim/keys/mailnica.com/default.txt
+#create DNS record
+
+vi /etc/postfix/main.cf
+smtpd_milters = inet:127.0.0.1:8892
+non_smtpd_milters = $smtpd_milters
+milter_default_action = accept
+internal_mail_filter_classes = bounce
+systemctl restart postfix
