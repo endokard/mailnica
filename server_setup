@@ -269,7 +269,8 @@ Mode               sv
 Canonicalization   relaxed/simple
 SubDomains         no
 
-Socket inet:8892@127.0.0.1
+#Socket inet:8892@127.0.0.1
+Socket local:/var/spool/postfix/opendkim/opendkim.sock
 
 #below #ADSPAction
 AutoRestart         yes
@@ -303,17 +304,41 @@ mkdir /etc/opendkim/keys/mailnica.com
 opendkim-genkey -b 2048 -d mailnica.com -D /etc/opendkim/keys/mailnica.com -s default -v
 chown opendkim:opendkim /etc/opendkim/keys/mailnica.com/default.private
 
-KeyTable                refile:/etc/opendkim/key.table
-SigningTable            refile:/etc/opendkim/signing.table
-ExternalIgnoreList      refile:/etc/opendkim/trusted.hosts
-InternalHosts           refile:/etc/opendkim/trusted.hosts
+
 
 cat /etc/opendkim/keys/mailnica.com/default.txt
 #create DNS record
 
+mkdir /var/spool/postfix/opendkim
+adduser postfix opendkim
+chown opendkim: /var/spool/postfix/opendkim
+
 vi /etc/postfix/main.cf
-smtpd_milters = inet:127.0.0.1:8892
+#smtpd_milters = inet:127.0.0.1:8892
+smtpd_milters = unix:/opendkim/opendkim.sock
 non_smtpd_milters = $smtpd_milters
 milter_default_action = accept
 internal_mail_filter_classes = bounce
 systemctl restart postfix
+
+apt install opendmarc
+no
+vi /etc/opendmarc.conf
+AuthservID OpenDMARC
+TrustedAuthservIDs mail.mailnica.com
+RejectFailures true
+IgnoreAuthenticatedClients true
+RequiredHeaders    true
+SPFSelfValidate true
+Socket local:/var/spool/postfix/opendmarc/opendmarc.sock
+
+mkdir -p /var/spool/postfix/opendmarc
+chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
+chmod 750 /var/spool/postfix/opendmarc/ -R
+adduser postfix opendmarc
+systemctl restart opendmarc
+
+
+
+systemctl enable opendmarc
+systemctl enable opendkim
