@@ -342,3 +342,24 @@ systemctl restart opendmarc
 
 systemctl enable opendmarc
 systemctl enable opendkim
+
+######
+#DNSMASQ
+#####
+apt-get install dnsmasq
+systemctl enable dnsmasq
+
+vi /etc/dnsmasq.conf
+no-resolv
+server=1.1.1.1
+server=64.6.65.6
+server=91.239.100.100
+server=195.10.195.195
+cache-size=500
+
+/etc/reslov.conf
+nameserver 127.0.0.1
+
+systemctl stop systemd-resolved
+sudo systemctl disable systemd-resolved
+systemctl start dnsmasq
