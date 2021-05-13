@@ -390,4 +390,8 @@ echo "deb-src [arch=amd64 signed-by=/etc/apt/keyrings/rspamd.gpg] http://rspamd.
 apt-get update
 apt-get --no-install-recommends install rspamd
 
-
+rspamadm pw
+#pass phrase
+#result goes to 
+#/etc/rspamd/local.d/worker-controller.inc
+#password =
