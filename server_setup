@@ -395,3 +395,19 @@ rspamadm pw
 #result goes to 
 #/etc/rspamd/local.d/worker-controller.inc
 #password =
+
+/etc/dovecot/sieve
+/etc/dovecot/90-sieve.conf
+/etc/dovecot/20-imap.conf #add sieve to plugins
+
+sievec /etc/dovecot/sieve/learn-spam.sieve
+sievec /etc/dovecot/sieve/learn-ham.sieve
+
+chmod u=rw,go= /etc/dovecot/sieve/learn-{spam,ham}.{sieve,svbin}
+chown vmail.vmail /etc/dovecot/sieve/learn-{spam,ham}.{sieve,svbin}
+
+sievec /etc/dovecot/sieve/spam-global.sieve #fix perm like above
+
+#######
+#Clam
+#######
