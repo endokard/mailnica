@@ -411,3 +411,26 @@ sievec /etc/dovecot/sieve/spam-global.sieve #fix perm like above
 #######
 #Clam
 #######
+apt-get update && apt-get install -y clamav-base clamav-freshclam clamav clamav-daemon
+systemctl stop clamav-daemon
+freshclam
+systemctl start clamav-daemon
+systemctl enable clamav-daemon
+
+/etc/rspamd/local.d/avtivirus.conf
+systemctl reload rspamd
+
+mkdir -p /usr/local/sbin/
+wget https://raw.githubusercontent.com/extremeshok/clamav-unofficial-sigs/master/clamav-unofficial-sigs.sh -O /usr/local/sbin/clamav-unofficial-sigs.sh && chmod 755 /usr/local/sbin/clamav-unofficial-sigs.sh
+mkdir -p /etc/clamav-unofficial-sigs/
+wget https://raw.githubusercontent.com/extremeshok/clamav-unofficial-sigs/master/config/master.conf -O /etc/clamav-unofficial-sigs/master.conf
+wget https://raw.githubusercontent.com/extremeshok/clamav-unofficial-sigs/master/config/user.conf -O /etc/clamav-unofficial-sigs/user.conf
+wget "https://raw.githubusercontent.com/extremeshok/clamav-unofficial-sigs/master/config/os/os.ubuntu.conf" -O /etc/clamav-unofficial-sigs/os.conf
+/usr/local/sbin/clamav-unofficial-sigs.sh --force
+/usr/local/sbin/clamav-unofficial-sigs.sh --install-logrotate
+/usr/local/sbin/clamav-unofficial-sigs.sh --install-man
+/usr/local/sbin/clamav-unofficial-sigs.sh --install-cron
+
+sign up for malwarepatrol and etc
+
+clamav-unofficial-sigs.sh -F
