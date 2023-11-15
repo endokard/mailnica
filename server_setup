@@ -8,13 +8,24 @@ passwd NEW_USER
 
 #SSH service configuration -> mailnica/ssh/sshd_conf
 vi /etc/sshd_conf
-port 27
+Protocol 2
+AllowUsers NEW_USER
+port 2725
+PermitEmptyPasswords no
 PermitRootLogin no
 AllowAgentForwarding no
 AllowTcpForwarding no
+X11Forwarding no
+ClientAliveInterval 900
+MaxAuthTries 3
+ClientAliveCountMax 3
+
+######to-do - key auth
 
 #Add new user to sudoers
 vi /etc/sudoers
+
+NEW_USER  ALL=(ALL:ALL) ALL
 
 #restart sshd service
 systemctl restart sshd
