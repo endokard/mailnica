@@ -7,6 +7,7 @@ useradd NEW_USER
 passwd NEW_USER
 
 #SSH service configuration -> mailnica/ssh/sshd_conf
+cp /etc/sshd_conf /etc/sshd_conf.bak
 vi /etc/sshd_conf
 Protocol 2
 AllowUsers NEW_USER
@@ -42,6 +43,7 @@ apt-get install postfix mailutils
 systemctl enable postfix
 
 #postfix configuration
+cp /etc/postfix/main.cf /etc/postfix/main.cf.bak
 #check /mailnica/postfix/
 
 systemctl start postfix
